@@ -6,7 +6,7 @@ from flask_cors import CORS
 from google import genai
 
 app = Flask(__name__)
-CORS(app, origins=["https://corp.bon-soleil.com", "http://localhost:8787"])
+CORS(app, origins=["https://corp.bon-soleil.com", "https://bizendao.github.io", "http://localhost:8787"])
 
 # Load API key
 key_path = os.path.expanduser("~/.config/google/gemini_api_key")

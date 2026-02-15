@@ -1,6 +1,6 @@
 /* Bizeny Akiko Chat Widget */
 (function() {
-  var API = '/bizeny/api/chat';
+  var API = 'https://corp.bon-soleil.com/bizeny/api/chat';
   var messages = [];
   var open = false;
 
