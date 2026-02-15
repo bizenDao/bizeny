@@ -2,16 +2,45 @@
 (function() {
   var API = 'https://corp.bon-soleil.com/bizeny/api/chat';
   var BASE = window.__CHAT_BASE || '';
+  var LANG = window.__CHAT_LANG || 'ja';
   var messages = [];
   var open = false;
 
+  var i18n = {
+    ja: {
+      tip: '彰子とお話ししませんか？',
+      title: 'Bizeny彰子',
+      subtitle: 'お気軽にお話しましょう',
+      placeholder: 'メッセージを入力...',
+      greeting: 'Bonjour! わたしはBizeny彰子です。備前焼のこと、何でも聞いてくださいね。',
+      error: 'Pardon... 少しお時間をいただけますか。'
+    },
+    en: {
+      tip: 'Chat with Akiko?',
+      title: 'Bizeny Akiko',
+      subtitle: "Let's talk about Bizen pottery",
+      placeholder: 'Type a message...',
+      greeting: "Bonjour! I'm Bizeny Akiko. Feel free to ask me anything about Bizen pottery!",
+      error: 'Pardon... Could you give me a moment?'
+    },
+    fr: {
+      tip: 'Discuter avec Akiko ?',
+      title: 'Bizeny Akiko',
+      subtitle: 'Parlons de la poterie de Bizen',
+      placeholder: 'Ecrivez un message...',
+      greeting: "Bonjour ! Je suis Bizeny Akiko. N'hesitez pas a me poser des questions sur la poterie de Bizen !",
+      error: "Pardon... Pourriez-vous me laisser un instant ?"
+    }
+  };
+  var t = i18n[LANG] || i18n.ja;
+
   // Create DOM
   var bubble = el('div', 'akiko-chat-bubble');
-  bubble.innerHTML = '<img src="' + BASE + 'images/akiko_face.jpg?v=5" alt="Bizeny彰子">';
+  bubble.innerHTML = '<img src="' + BASE + 'images/akiko_face.jpg?v=5" alt="Bizeny Akiko">';
   bubble.onclick = toggle;
 
   var tip = el('div', 'akiko-chat-tip');
-  tip.textContent = '彰子とお話ししませんか？';
+  tip.textContent = t.tip;
   tip.onclick = toggle;
 
   var panel = el('div', 'akiko-chat-panel');
@@ -20,15 +49,15 @@
       '<div class="akiko-chat-header-left">' +
         '<img src="' + BASE + 'images/akiko_face.jpg" class="akiko-header-icon" alt="">' +
         '<div class="akiko-header-text">' +
-          '<strong>Bizeny彰子</strong>' +
-          '<small>お気軽にお話しましょう</small>' +
+          '<strong>' + t.title + '</strong>' +
+          '<small>' + t.subtitle + '</small>' +
         '</div>' +
       '</div>' +
       '<button class="akiko-chat-close">&times;</button>' +
     '</div>' +
     '<div class="akiko-chat-messages" id="akiko-msgs"></div>' +
     '<div class="akiko-chat-input">' +
-      '<input type="text" id="akiko-input" placeholder="メッセージを入力..." maxlength="200">' +
+      '<input type="text" id="akiko-input" placeholder="' + t.placeholder + '" maxlength="200">' +
       '<button id="akiko-send">&#10148;</button>' +
     '</div>';
 
@@ -48,7 +77,7 @@
 
   // Greeting
   setTimeout(function() {
-    addMsg('akiko', 'Bonjour! わたしはBizeny彰子です。備前焼のこと、何でも聞いてくださいね。');
+    addMsg('akiko', t.greeting);
   }, 500);
 
   function toggle() {
@@ -82,7 +111,7 @@
     fetch(API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: messages })
+      body: JSON.stringify({ messages: messages, lang: LANG })
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -93,7 +122,7 @@
     })
     .catch(function() {
       msgsEl.removeChild(typingWrap);
-      addMsg('akiko', 'Pardon... 少しお時間をいただけますか。');
+      addMsg('akiko', t.error);
     });
   }
 

@@ -218,7 +218,7 @@ document.querySelectorAll('nav a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector(a.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth' }); });
 });
 </script>
-<script>window.__CHAT_BASE = '../';</script>
+<script>window.__CHAT_BASE = '../'; window.__CHAT_LANG = 'en';</script>
 <script src="../js/chat.js"></script>
 </body>
 </html>

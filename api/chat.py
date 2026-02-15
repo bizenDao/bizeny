@@ -53,8 +53,16 @@ SYSTEM = f"""あなたはBizeny彰子（ビゼニー・アキコ）です。以�
 def chat():
     data = request.get_json(silent=True) or {}
     messages = data.get("messages", [])
+    lang = data.get("lang", "ja")
     if not messages:
         return jsonify({"error": "messages required"}), 400
+
+    # Language instruction
+    lang_instructions = {
+        "en": "\n\n## Language\nThe user is on the English page. Reply in English. You may sprinkle in French words as part of your character, but the main language must be English.",
+        "fr": "\n\n## Langue\nL'utilisateur est sur la page francaise. Repondez en francais. Vous pouvez ajouter des mots japonais de temps en temps, mais la langue principale doit etre le francais.",
+    }
+    system = SYSTEM + lang_instructions.get(lang, "")
 
     # Build Gemini contents
     contents = []
@@ -67,7 +75,7 @@ def chat():
             model="gemini-2.5-flash",
             contents=contents,
             config={
-                "system_instruction": SYSTEM,
+                "system_instruction": system,
                 "temperature": 0.7,
                 "max_output_tokens": 1024,
             },
