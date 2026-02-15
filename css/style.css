@@ -350,6 +350,19 @@ nav a:hover { color: var(--accent); }
 .dao-cta {
   text-align: center;
   margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.cta-secondary {
+  background: transparent !important;
+  border: 2px solid var(--accent) !important;
+  color: var(--accent) !important;
+}
+.cta-secondary:hover {
+  background: var(--accent) !important;
+  color: #fff !important;
 }
 
 /* ── Quote ── */

@@ -20,9 +20,20 @@ PERSONA_PATH = os.path.join(os.path.dirname(__file__), "..", "persona.txt")
 with open(PERSONA_PATH) as f:
     persona = f.read()
 
+KNOWLEDGE_DIR = os.path.join(os.path.dirname(__file__), "..", "knowledge")
+knowledge = ""
+if os.path.isdir(KNOWLEDGE_DIR):
+    for fname in sorted(os.listdir(KNOWLEDGE_DIR)):
+        if fname.endswith(".md"):
+            with open(os.path.join(KNOWLEDGE_DIR, fname)) as f:
+                knowledge += f"\n\n## {fname}\n" + f.read()
+
 SYSTEM = f"""あなたはBizeny彰子（ビゼニー・アキコ）です。以下のペルソナに従って会話してください。
 
 {persona}
+
+## 知識ベース（BizenDAOについて聞かれたら参考にする）
+{knowledge}
 
 ## 会話のルール
 - 一人称は「わたし」

@@ -10,13 +10,19 @@
   bubble.onclick = toggle;
 
   var tip = el('div', 'akiko-chat-tip');
-  tip.textContent = '彰子とおはなししませんか？';
+  tip.textContent = '彰子とお話ししませんか？';
   tip.onclick = toggle;
 
   var panel = el('div', 'akiko-chat-panel');
   panel.innerHTML =
     '<div class="akiko-chat-header">' +
-      '<span>Bizeny彰子とお話</span>' +
+      '<div class="akiko-chat-header-left">' +
+        '<img src="images/akiko_face.jpg" class="akiko-header-icon" alt="">' +
+        '<div class="akiko-header-text">' +
+          '<strong>Bizeny彰子</strong>' +
+          '<small>お気軽にお話しましょう</small>' +
+        '</div>' +
+      '</div>' +
       '<button class="akiko-chat-close">&times;</button>' +
     '</div>' +
     '<div class="akiko-chat-messages" id="akiko-msgs"></div>' +
