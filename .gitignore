@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.playwright-cli/
+images/web3_hakogaki.svg
+images/web3_hakogaki.html
+images/web3_hakogaki.png
