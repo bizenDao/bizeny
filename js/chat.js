@@ -1,12 +1,13 @@
 /* Bizeny Akiko Chat Widget */
 (function() {
   var API = 'https://corp.bon-soleil.com/bizeny/api/chat';
+  var BASE = window.__CHAT_BASE || '';
   var messages = [];
   var open = false;
 
   // Create DOM
   var bubble = el('div', 'akiko-chat-bubble');
-  bubble.innerHTML = '<img src="images/akiko_face.jpg?v=5" alt="Bizeny彰子">';
+  bubble.innerHTML = '<img src="' + BASE + 'images/akiko_face.jpg?v=5" alt="Bizeny彰子">';
   bubble.onclick = toggle;
 
   var tip = el('div', 'akiko-chat-tip');
@@ -17,7 +18,7 @@
   panel.innerHTML =
     '<div class="akiko-chat-header">' +
       '<div class="akiko-chat-header-left">' +
-        '<img src="images/akiko_face.jpg" class="akiko-header-icon" alt="">' +
+        '<img src="' + BASE + 'images/akiko_face.jpg" class="akiko-header-icon" alt="">' +
         '<div class="akiko-header-text">' +
           '<strong>Bizeny彰子</strong>' +
           '<small>お気軽にお話しましょう</small>' +
@@ -71,7 +72,7 @@
     var typingWrap = el('div', 'akiko-msg-akiko-wrap');
     var typingIcon = document.createElement('img');
     typingIcon.className = 'akiko-msg-icon';
-    typingIcon.src = 'images/akiko_face.jpg?v=5';
+    typingIcon.src = BASE + 'images/akiko_face.jpg?v=5';
     typingIcon.alt = '';
     typingWrap.appendChild(typingIcon);
     typingWrap.appendChild(typing);
@@ -103,7 +104,7 @@
       var wrap = el('div', 'akiko-msg-akiko-wrap');
       var icon = document.createElement('img');
       icon.className = 'akiko-msg-icon';
-      icon.src = 'images/akiko_face.jpg?v=5';
+      icon.src = BASE + 'images/akiko_face.jpg?v=5';
       icon.alt = '';
       wrap.appendChild(icon);
       wrap.appendChild(d);
