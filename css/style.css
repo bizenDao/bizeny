@@ -130,8 +130,6 @@ nav .lang-switch a.active {
   opacity: 1;
   color: var(--accent);
   font-weight: 700;
-  border-bottom: 2px solid var(--accent);
-  padding-bottom: 2px;
 }
 nav .lang-switch .lang-sep {
   opacity: 0.3;
