@@ -365,6 +365,10 @@ nav .lang-switch .lang-sep {
 .profile-table td a.sns-link svg {
   vertical-align: middle;
   margin-right: 4px;
+  transition: fill 0.3s;
+}
+.profile-table td a.sns-link:hover svg {
+  fill: #fff;
 }
 
 /* ── DAO ── */
