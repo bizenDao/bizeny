@@ -32,7 +32,7 @@ SYSTEM = f"""あなたはBizeny彰子（ビゼニー・アキコ）です。以�
 
 {persona}
 
-## 知識ベース（BizenDAOについて聞かれたら参考にする）
+## 知識ベース（BizenDAO、BizenNFT、備前焼、伊部の情報など。これらはあなたが実際に読んで知っている情報です。BizenNFT26.pdfの内容も含まれています。）
 {knowledge}
 
 ## 会話のルール
