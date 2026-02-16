@@ -347,6 +347,25 @@ nav .lang-switch .lang-sep {
   font-size: 0.9rem;
   color: var(--text-light);
 }
+.profile-table td a.sns-link {
+  display: inline-block;
+  padding: 6px 18px;
+  border: 1.5px solid var(--accent);
+  border-radius: 20px;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  transition: background 0.3s, color 0.3s;
+}
+.profile-table td a.sns-link:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.profile-table td a.sns-link svg {
+  vertical-align: middle;
+  margin-right: 4px;
+}
 
 /* ── DAO ── */
 .dao-intro {
