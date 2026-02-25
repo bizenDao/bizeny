@@ -6,7 +6,7 @@ from flask_cors import CORS
 from google import genai
 
 app = Flask(__name__)
-CORS(app, origins=["https://corp.bon-soleil.com", "https://bizendao.github.io", "http://localhost:8787"])
+CORS(app, origins=["https://corp.bon-soleil.com", "https://bizeny.bon-soleil.com", "https://bizendao.github.io", "http://localhost:8787"])
 
 # Load API key
 key_path = os.path.expanduser("~/.config/google/gemini_api_key")
@@ -92,6 +92,35 @@ def chat():
         return jsonify({"reply": reply})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route("/api/tts", methods=["POST"])
+def tts():
+    """Text-to-Speech via Google Cloud TTS API."""
+    import urllib.request, base64
+    data = request.get_json(silent=True) or {}
+    text = (data.get("text") or "")[:2000]  # limit
+    if not text:
+        return jsonify({"error": "text required"}), 400
+
+    payload = json.dumps({
+        "input": {"text": text},
+        "voice": {"languageCode": "ja-JP", "name": "ja-JP-Wavenet-B"},
+        "audioConfig": {"audioEncoding": "MP3", "speakingRate": 1.0}
+    }).encode()
+
+    try:
+        req = urllib.request.Request(
+            f"https://texttospeech.googleapis.com/v1/text:synthesize?key={api_key}",
+            data=payload,
+            headers={"Content-Type": "application/json"}
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            result = json.loads(resp.read())
+        audio_b64 = result.get("audioContent", "")
+        return jsonify({"audio": audio_b64})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8788, debug=False)
