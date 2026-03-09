@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>web3版の箱書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: #FAFAF8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .canvas {
+    width: 1200px;
+    height: 900px;
+    background: #FAFAF8;
+    position: relative;
+    overflow: hidden;
+  }
+  .title {
+    position: absolute;
+    top: 18px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 52px;
+    font-weight: 900;
+    color: #8B6914;
+    letter-spacing: 2px;
+  }
+
+  /* ── 左上: 陶芸家 ── */
+  .potter-area {
+    position: absolute;
+    top: 90px; left: 20px;
+    width: 160px;
+    text-align: center;
+  }
+  .potter-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* ── 中央上: 作品+NFT/RWAボックス ── */
+  .artwork-box {
+    position: absolute;
+    top: 105px; left: 255px;
+    width: 300px;
+    background: white;
+    border-radius: 20px;
+    border: 2px solid #ddd;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    padding: 18px 20px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .artwork-box-title {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .artwork-tokens {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .token-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .token-label {
+    font-size: 12px;
+    color: #555;
+    font-weight: 700;
+  }
+  .plus-sign {
+    font-size: 28px;
+    font-weight: 900;
+    color: #8B6914;
+    margin-top: -4px;
+  }
+  .artwork-info-label {
+    font-size: 13px;
+    color: #444;
+    margin-top: 10px;
+    font-weight: 700;
+  }
+
+  /* ── 右: SBTエリア（大枠） ── */
+  .sbt-area {
+    position: absolute;
+    top: 90px; right: 20px;
+    width: 310px;
+    background: #FFF5EB;
+    border-radius: 20px;
+    border: 3px solid #EA580C;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .sbt-group {
+    background: rgba(255,255,255,0.6);
+    border-radius: 12px;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sbt-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #92400E;
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.20);
+  }
+  .sbt-card-text {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .sbt-plus {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 900;
+    color: #EA580C;
+    margin: 2px 0;
+  }
+
+  /* ── 中央: TBAブロック ── */
+  .tba-block {
+    position: absolute;
+    top: 230px;
+    left: 560px;
+    width: 130px;
+    height: 130px;
+  }
+
+  /* ── Discord テキスト ── */
+  .discord-text {
+    position: absolute;
+    top: 340px; left: 28px;
+    font-size: 14px;
+    color: #2D6A2D;
+    font-weight: 700;
+    line-height: 1.5;
+    text-align: center;
+    width: 120px;
+  }
+
+  /* ── 左下: 陶芸ファン ── */
+  .fan-area {
+    position: absolute;
+    bottom: 120px; left: 20px;
+    width: 170px;
+    text-align: center;
+  }
+  .fan-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    margin-top: 6px;
+  }
+
+  /* ── SNS テキスト ── */
+  .sns-text {
+    position: absolute;
+    bottom: 68px; left: 10px;
+    font-size: 14px;
+    color: #333;
+    font-weight: 700;
+    text-align: center;
+    width: 160px;
+    line-height: 1.4;
+  }
+
+  /* ── 中央下: 料理イラスト ── */
+  .food-area {
+    position: absolute;
+    bottom: 100px; left: 250px;
+    width: 190px;
+    text-align: center;
+  }
+  .food-label {
+    font-size: 13px;
+    color: #333;
+    font-weight: 700;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* ── 中央下テキスト ── */
+  .dao-text {
+    position: absolute;
+    bottom: 28px; left: 240px;
+    font-size: 12.5px;
+    color: #333;
+    font-weight: 700;
+    text-align: center;
+    width: 240px;
+    line-height: 1.5;
+  }
+
+  /* ── 右下: プレゼント ── */
+  .gift-area {
+    position: absolute;
+    bottom: 80px; right: 30px;
+    width: 160px;
+    text-align: center;
+  }
+  .gift-label {
+    font-size: 13px;
+    color: #333;
+    font-weight: 700;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* ── 矢印SVGオーバーレイ ── */
+  .arrows-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1200px;
+    height: 900px;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- タイトル -->
+  <div class="title">web3版の箱書</div>
+
+  <!-- 左上: 陶芸家 -->
+  <div class="potter-area">
+    <svg width="140" height="130" viewBox="0 0 140 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- ろくろの台 -->
+      <ellipse cx="75" cy="108" rx="40" ry="8" fill="#8B6914" opacity="0.5"/>
+      <rect x="50" y="95" width="50" height="16" rx="4" fill="#A0522D"/>
+      <!-- ろくろの器 -->
+      <ellipse cx="75" cy="95" rx="28" ry="10" fill="#C4844A" opacity="0.8"/>
+      <path d="M48 95 Q52 75 75 72 Q98 75 102 95" fill="#C4844A" opacity="0.6"/>
+      <!-- 人物の体 -->
+      <ellipse cx="52" cy="70" rx="16" ry="20" fill="#4A90D9"/>
+      <!-- 腕（伸ばしてろくろに触れる） -->
+      <path d="M60 65 Q75 78 80 85" stroke="#4A90D9" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <path d="M55 58 Q70 72 78 82" stroke="#FAD5A5" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <!-- 手 -->
+      <circle cx="80" cy="85" r="5" fill="#FAD5A5"/>
+      <!-- 頭 -->
+      <circle cx="52" cy="44" r="18" fill="#FAD5A5"/>
+      <!-- 髪 -->
+      <path d="M34 36 Q36 22 52 20 Q68 22 70 36 Q60 28 52 30 Q44 28 34 36Z" fill="#888"/>
+      <!-- 目 -->
+      <circle cx="46" cy="42" r="2" fill="#333"/>
+      <circle cx="58" cy="42" r="2" fill="#333"/>
+      <!-- 座っている足 -->
+      <path d="M44 88 Q38 100 30 108" stroke="#333" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path d="M56 90 Q52 105 44 112" stroke="#333" stroke-width="6" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="potter-label">陶芸家<br>窯元</div>
+  </div>
+
+  <!-- 中央上: 作品+NFT/RWAボックス -->
+  <div class="artwork-box">
+    <div class="artwork-box-title">作　品</div>
+    <div class="artwork-tokens">
+      <!-- 備前焼イラスト -->
+      <svg width="72" height="68" viewBox="0 0 72 68" fill="none">
+        <ellipse cx="36" cy="56" rx="30" ry="8" fill="#8B6914" opacity="0.3"/>
+        <path d="M10 40 Q8 20 36 15 Q64 20 62 40 Q58 60 36 62 Q14 60 10 40Z" fill="#C4844A"/>
+        <path d="M15 38 Q14 22 36 18 Q58 22 57 38" fill="#A0522D" opacity="0.4"/>
+        <ellipse cx="36" cy="22" rx="20" ry="6" fill="#D4956A" opacity="0.6"/>
+        <!-- 備前焼の焼き色テクスチャ -->
+        <path d="M20 35 Q25 30 32 33" stroke="#7A3A12" stroke-width="1.5" fill="none" opacity="0.5"/>
+        <path d="M40 28 Q48 25 52 32" stroke="#7A3A12" stroke-width="1.5" fill="none" opacity="0.5"/>
+        <path d="M22 45 Q30 42 38 46" stroke="#7A3A12" stroke-width="1.2" fill="none" opacity="0.4"/>
+      </svg>
+
+      <div class="plus-sign">+</div>
+
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
+        <!-- RWA 六角形 -->
+        <div class="token-group">
+          <svg width="54" height="48" viewBox="0 0 54 48">
+            <defs>
+              <linearGradient id="rwaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#EF4444"/>
+                <stop offset="100%" style="stop-color:#B91C1C"/>
+              </linearGradient>
+            </defs>
+            <polygon points="27,2 50,14 50,34 27,46 4,34 4,14" fill="url(#rwaGrad)" stroke="#fff" stroke-width="1.5"/>
+            <text x="27" y="28" text-anchor="middle" fill="white" font-family="'Noto Sans JP',sans-serif" font-weight="700" font-size="12">RWA</text>
+          </svg>
+          <span class="token-label">RWA</span>
+        </div>
+
+        <!-- NFT 六角形 -->
+        <div class="token-group">
+          <svg width="54" height="48" viewBox="0 0 54 48">
+            <defs>
+              <linearGradient id="nftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#3B82F6"/>
+                <stop offset="100%" style="stop-color:#1D4ED8"/>
+              </linearGradient>
+            </defs>
+            <polygon points="27,2 50,14 50,34 27,46 4,34 4,14" fill="url(#nftGrad)" stroke="#fff" stroke-width="1.5"/>
+            <text x="27" y="28" text-anchor="middle" fill="white" font-family="'Noto Sans JP',sans-serif" font-weight="700" font-size="12">NFT</text>
+          </svg>
+          <span class="token-label">NFT</span>
+        </div>
+      </div>
+    </div>
+    <div class="artwork-info-label">作品情報</div>
+  </div>
+
+  <!-- 右: SBTエリア -->
+  <div class="sbt-area">
+    <!-- 上グループ -->
+    <div class="sbt-group">
+      <div class="sbt-card">
+        <svg width="28" height="25" viewBox="0 0 28 25">
+          <defs>
+            <linearGradient id="sbtG1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#D97706"/>
+              <stop offset="100%" style="stop-color:#92400E"/>
+            </linearGradient>
+          </defs>
+          <polygon points="14,1 26,7 26,18 14,24 2,18 2,7" fill="url(#sbtG1)" stroke="#F59E0B" stroke-width="1"/>
+          <text x="14" y="16" text-anchor="middle" fill="white" font-family="'Noto Sans JP',sans-serif" font-weight="700" font-size="8">SBT</text>
+        </svg>
+        <span class="sbt-card-text">展示会やイベントの出展歴</span>
+      </div>
+      <div class="sbt-card">
+        <svg width="28" height="25" viewBox="0 0 28 25">
+          <polygon points="14,1 26,7 26,18 14,24 2,18 2,7" fill="url(#sbtG1)" stroke="#F59E0B" stroke-width="1"/>
+          <text x="14" y="16" text-anchor="middle" fill="white" font-family="'Noto Sans JP',sans-serif" font-weight="700" font-size="8">SBT</text>
+        </svg>
+        <span class="sbt-card-text">受賞歴</span>
+      </div>
+    </div>
+
+    <div class="sbt-plus">＋</div>
+
+    <!-- 下グループ -->
+    <div class="sbt-group">
+      <div class="sbt-card">
+        <svg width="28" height="25" viewBox="0 0 28 25">
+          <defs>
+            <linearGradient id="sbtG2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#D97706"/>
+              <stop offset="100%" style="stop-color:#92400E"/>
+            </linearGradient>
+          </defs>
+          <polygon points="14,1 26,7 26,18 14,24 2,18 2,7" fill="url(#sbtG2)" stroke="#F59E0B" stroke-width="1"/>
+          <text x="14" y="16" text-anchor="middle" fill="white" font-family="'Noto Sans JP',sans-serif" font-weight="700" font-size="8">SBT</text>
+        </svg>
+        <span class="sbt-card-text">作品の使用歴</span>
+      </div>
+      <div class="sbt-card">
+        <svg width="28" height="25" viewBox="0 0 28 25">
+          <polygon points="14,1 26,7 26,18 14,24 2,18 2,7" fill="url(#sbtG2)" stroke="#F59E0B" stroke-width="1"/>
+          <text x="14" y="16" text-anchor="middle" fill="white" font-family="'Noto Sans JP',sans-serif" font-weight="700" font-size="8">SBT</text>
+        </svg>
+        <span class="sbt-card-text">イベント参加歴</span>
+      </div>
+      <div class="sbt-card">
+        <svg width="28" height="25" viewBox="0 0 28 25">
+          <polygon points="14,1 26,7 26,18 14,24 2,18 2,7" fill="url(#sbtG2)" stroke="#F59E0B" stroke-width="1"/>
+          <text x="14" y="16" text-anchor="middle" fill="white" font-family="'Noto Sans JP',sans-serif" font-weight="700" font-size="8">SBT</text>
+        </svg>
+        <span class="sbt-card-text">贈与や購入時の想い出の記録</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 中央: TBAブロック (霧箱) -->
+  <div class="tba-block">
+    <svg width="130" height="130" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- 外枠グラデーション -->
+        <linearGradient id="tbaOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#EA580C;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#C2410C;stop-opacity:1"/>
+        </linearGradient>
+        <!-- 内側霧グラデーション -->
+        <radialGradient id="tbaMist1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" style="stop-color:#FFF7ED;stop-opacity:0.95"/>
+          <stop offset="40%" style="stop-color:#FDBA74;stop-opacity:0.7"/>
+          <stop offset="70%" style="stop-color:#EA580C;stop-opacity:0.5"/>
+          <stop offset="100%" style="stop-color:#9A3412;stop-opacity:0.8"/>
+        </radialGradient>
+        <radialGradient id="tbaMist2" cx="30%" cy="30%" r="60%">
+          <stop offset="0%" style="stop-color:white;stop-opacity:0.8"/>
+          <stop offset="100%" style="stop-color:white;stop-opacity:0"/>
+        </radialGradient>
+        <radialGradient id="tbaMist3" cx="70%" cy="70%" r="50%">
+          <stop offset="0%" style="stop-color:white;stop-opacity:0.5"/>
+          <stop offset="100%" style="stop-color:white;stop-opacity:0"/>
+        </radialGradient>
+        <filter id="blur1">
+          <feGaussianBlur stdDeviation="4"/>
+        </filter>
+        <filter id="blur2">
+          <feGaussianBlur stdDeviation="6"/>
+        </filter>
+      </defs>
+      <!-- 外枠 -->
+      <rect x="3" y="3" width="124" height="124" rx="14" fill="url(#tbaOuter)" stroke="#7C2D12" stroke-width="2"/>
+      <!-- 内側霧 -->
+      <rect x="10" y="10" width="110" height="110" rx="10" fill="url(#tbaMist1)"/>
+      <!-- 霧のエフェクト -->
+      <ellipse cx="45" cy="50" rx="35" ry="25" fill="white" opacity="0.35" filter="url(#blur1)"/>
+      <ellipse cx="85" cy="80" rx="28" ry="20" fill="white" opacity="0.30" filter="url(#blur1)"/>
+      <ellipse cx="65" cy="35" rx="20" ry="14" fill="white" opacity="0.45" filter="url(#blur2)"/>
+      <ellipse cx="40" cy="85" rx="22" ry="16" fill="white" opacity="0.28" filter="url(#blur1)"/>
+      <!-- TBAテキスト -->
+      <text x="65" y="72" text-anchor="middle" fill="white" font-family="'Noto Sans JP',sans-serif" font-weight="900" font-size="28" letter-spacing="2"
+        style="text-shadow: 0 2px 8px rgba(0,0,0,0.5);">TBA</text>
+    </svg>
+  </div>
+
+  <!-- Discordテキスト -->
+  <div class="discord-text">Discordや<br>メタバース<br>で交流</div>
+
+  <!-- 左下: 陶芸ファン -->
+  <div class="fan-area">
+    <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- 円形に並ぶ人々 (12人) -->
+      <g id="persons">
+        <!-- 各人物: 小さな頭+体のシルエット、円の外周に配置 -->
+        <!-- 0度 (上) -->
+        <g transform="translate(80,80) rotate(0) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#E07B54"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#4A90D9"/>
+        </g>
+        <!-- 30度 -->
+        <g transform="translate(80,80) rotate(30) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#5BA85A"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#F59E0B"/>
+        </g>
+        <!-- 60度 -->
+        <g transform="translate(80,80) rotate(60) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#C4844A"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#92400E"/>
+        </g>
+        <!-- 90度 -->
+        <g transform="translate(80,80) rotate(90) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#E07B54"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#4A90D9"/>
+        </g>
+        <!-- 120度 -->
+        <g transform="translate(80,80) rotate(120) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#A78BFA"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#2D6A2D"/>
+        </g>
+        <!-- 150度 -->
+        <g transform="translate(80,80) rotate(150) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#F472B6"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#EF4444"/>
+        </g>
+        <!-- 180度 -->
+        <g transform="translate(80,80) rotate(180) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#5BA85A"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#8B6914"/>
+        </g>
+        <!-- 210度 -->
+        <g transform="translate(80,80) rotate(210) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#C4844A"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#4A90D9"/>
+        </g>
+        <!-- 240度 -->
+        <g transform="translate(80,80) rotate(240) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#E07B54"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#A78BFA"/>
+        </g>
+        <!-- 270度 -->
+        <g transform="translate(80,80) rotate(270) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#F472B6"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#5BA85A"/>
+        </g>
+        <!-- 300度 -->
+        <g transform="translate(80,80) rotate(300) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#92400E"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#EF4444"/>
+        </g>
+        <!-- 330度 -->
+        <g transform="translate(80,80) rotate(330) translate(0,-62)">
+          <circle cx="0" cy="-8" r="7" fill="#A78BFA"/>
+          <path d="M-6,0 Q0,14 6,0" fill="#C4844A"/>
+        </g>
+      </g>
+      <!-- 円の輪 -->
+      <circle cx="80" cy="80" r="48" fill="none" stroke="#D4956A" stroke-width="2" stroke-dasharray="6,4" opacity="0.5"/>
+    </svg>
+    <div class="fan-label">陶芸ファン</div>
+  </div>
+
+  <!-- SNSテキスト -->
+  <div class="sns-text">SNSにも発信<br>して振興活動</div>
+
+  <!-- 中央下: 料理イラスト -->
+  <div class="food-area">
+    <svg width="160" height="130" viewBox="0 0 160 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- 備前焼の皿 -->
+      <ellipse cx="80" cy="90" rx="68" ry="18" fill="#8B6914" opacity="0.25"/>
+      <ellipse cx="80" cy="85" rx="65" ry="15" fill="#C4844A" opacity="0.4"/>
+      <path d="M18 75 Q20 40 80 35 Q140 40 142 75 Q138 100 80 104 Q22 100 18 75Z" fill="#C4844A"/>
+      <path d="M22 73 Q24 44 80 40 Q136 44 138 73" fill="#D4956A" opacity="0.5"/>
+      <ellipse cx="80" cy="42" rx="54" ry="12" fill="#D4956A" opacity="0.7"/>
+      <!-- 料理: 野菜・食材 -->
+      <!-- 緑の葉 -->
+      <ellipse cx="65" cy="62" rx="18" ry="10" fill="#5BA85A" transform="rotate(-20 65 62)"/>
+      <ellipse cx="90" cy="58" rx="14" ry="8" fill="#4A8A49" transform="rotate(15 90 58)"/>
+      <ellipse cx="75" cy="55" rx="10" ry="6" fill="#6DBB6C" transform="rotate(-10 75 55)"/>
+      <!-- 赤い食材 -->
+      <circle cx="60" cy="72" r="8" fill="#EF4444" opacity="0.85"/>
+      <circle cx="100" cy="68" r="7" fill="#DC2626" opacity="0.85"/>
+      <!-- 白い食材 -->
+      <ellipse cx="80" cy="75" rx="12" ry="6" fill="#F5F5DC" opacity="0.9"/>
+      <!-- 茶色の食材 -->
+      <ellipse cx="55" cy="80" rx="10" ry="5" fill="#92400E" opacity="0.7" transform="rotate(10 55 80)"/>
+      <ellipse cx="108" cy="78" rx="9" ry="5" fill="#A0522D" opacity="0.7" transform="rotate(-15 108 78)"/>
+      <!-- 備前焼の焼き色 -->
+      <path d="M25 72 Q30 65 40 68" stroke="#7A3A12" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <path d="M120 70 Q130 65 138 72" stroke="#7A3A12" stroke-width="1.5" fill="none" opacity="0.4"/>
+    </svg>
+    <div class="food-label">料理を盛り付けて記念撮影</div>
+  </div>
+
+  <!-- DAOイベントテキスト -->
+  <div class="dao-text">ファンが自分の所持する作品を持ち寄って<br>DAOのイベントやお茶会などに参加</div>
+
+  <!-- 右下: プレゼントボックス -->
+  <div class="gift-area">
+    <svg width="120" height="110" viewBox="0 0 120 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- 箱の影 -->
+      <ellipse cx="60" cy="104" rx="45" ry="5" fill="#8B6914" opacity="0.2"/>
+      <!-- 箱本体 -->
+      <rect x="12" y="45" width="96" height="58" rx="4" fill="#D97706"/>
+      <rect x="12" y="45" width="96" height="58" rx="4" fill="none" stroke="#92400E" stroke-width="2"/>
+      <!-- 箱の蓋 -->
+      <rect x="8" y="35" width="104" height="18" rx="4" fill="#F59E0B"/>
+      <rect x="8" y="35" width="104" height="18" rx="4" fill="none" stroke="#92400E" stroke-width="2"/>
+      <!-- 縦のリボン -->
+      <rect x="52" y="35" width="16" height="68" fill="#EF4444" opacity="0.9"/>
+      <rect x="52" y="35" width="16" height="18" fill="#DC2626"/>
+      <!-- 横のリボン (蓋の上) -->
+      <rect x="8" y="43" width="104" height="10" fill="#EF4444" opacity="0.85"/>
+      <!-- リボンの結び目 -->
+      <!-- 左の羽根 -->
+      <path d="M60,35 Q42,18 30,22 Q28,32 44,35 Z" fill="#EF4444"/>
+      <!-- 右の羽根 -->
+      <path d="M60,35 Q78,18 90,22 Q92,32 76,35 Z" fill="#EF4444"/>
+      <!-- 中心の結び目 -->
+      <circle cx="60" cy="35" r="7" fill="#DC2626"/>
+      <!-- 箱の装飾ライン -->
+      <line x1="60" y1="53" x2="60" y2="103" stroke="#92400E" stroke-width="1" opacity="0.3"/>
+    </svg>
+    <div class="gift-label">お祝いに<br>贈られたなど</div>
+  </div>
+
+  <!-- 矢印SVGオーバーレイ -->
+  <svg class="arrows-overlay" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- 青矢印マーカー -->
+      <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#1D4ED8"/>
+      </marker>
+      <!-- 赤矢印マーカー -->
+      <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#EF4444"/>
+      </marker>
+      <!-- 緑矢印マーカー (双方向) -->
+      <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#2D6A2D"/>
+      </marker>
+      <marker id="arrowGreenStart" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto-start-reverse">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#2D6A2D"/>
+      </marker>
+      <!-- オレンジ矢印 -->
+      <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#EA580C"/>
+      </marker>
+    </defs>
+
+    <!-- 陶芸家 → SBT上グループへの青矢印（上方向） -->
+    <path d="M 160 155 Q 480 120 860 195" stroke="#1D4ED8" stroke-width="4" fill="none" marker-end="url(#arrowBlue)"/>
+
+    <!-- 陶芸家 → SBT上グループ2本目（受賞歴） -->
+    <path d="M 160 170 Q 480 160 860 265" stroke="#1D4ED8" stroke-width="4" fill="none" marker-end="url(#arrowBlue)"/>
+
+    <!-- NFT/RWAボックス → TBAへの赤矢印 -->
+    <path d="M 556 280 L 563 295" stroke="#EF4444" stroke-width="5" fill="none" marker-end="url(#arrowRed)"/>
+
+    <!-- TBA → SBT下グループへの青矢印 -->
+    <path d="M 692 340 Q 780 480 862 530" stroke="#1D4ED8" stroke-width="4" fill="none" marker-end="url(#arrowBlue)"/>
+    <path d="M 692 355 Q 790 530 862 600" stroke="#1D4ED8" stroke-width="4" fill="none" marker-end="url(#arrowBlue)"/>
+    <path d="M 692 370 Q 800 590 862 670" stroke="#1D4ED8" stroke-width="4" fill="none" marker-end="url(#arrowBlue)"/>
+
+    <!-- 料理/イベント → SBT下グループ（プレゼント→最下SBT）の青矢印 -->
+    <path d="M 1010 760 Q 960 720 862 700" stroke="#1D4ED8" stroke-width="4" fill="none" marker-end="url(#arrowBlue)"/>
+
+    <!-- Discordテキスト ↔ 陶芸ファン（緑の双方向矢印） -->
+    <path d="M 100 370 L 100 510" stroke="#2D6A2D" stroke-width="5" fill="none"
+      marker-start="url(#arrowGreenStart)" marker-end="url(#arrowGreen)"/>
+
+    <!-- 料理 → SNSへのオレンジ矢印 -->
+    <path d="M 290 760 Q 220 780 175 800" stroke="#EA580C" stroke-width="4" fill="none" marker-end="url(#arrowOrange)"/>
+
+    <!-- 陶芸家 → NFT/RWAへの青矢印 -->
+    <path d="M 160 180 Q 220 220 255 230" stroke="#1D4ED8" stroke-width="4" fill="none" marker-end="url(#arrowBlue)"/>
+  </svg>
+
+</div>
+</body>
+</html>
