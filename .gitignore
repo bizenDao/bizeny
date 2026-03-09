@@ -4,3 +4,8 @@ __pycache__/
 images/web3_hakogaki.svg
 images/web3_hakogaki.html
 images/web3_hakogaki.png
+
+# 一時素材・生成画像（使い捨て）
+tmp/
+ig_tmp/
+images/ig_hosting/
