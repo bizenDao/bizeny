@@ -238,7 +238,7 @@ nav .lang-switch .lang-sep {
 .about-image {
   width: 100%;
   border-radius: 12px;
-  box-shadow: 0 4px 24px var(--shadow);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 .about-text p {
   margin-bottom: 1.2rem;
@@ -323,7 +323,7 @@ nav .lang-switch .lang-sep {
   padding: 48px;
   max-width: 640px;
   margin: 0 auto;
-  box-shadow: 0 4px 24px var(--shadow);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 .profile-table {
   width: 100%;
@@ -387,7 +387,7 @@ nav .lang-switch .lang-sep {
   margin: 0 auto 2rem;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 24px var(--shadow);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 .dao-image img {
   width: 100%;
