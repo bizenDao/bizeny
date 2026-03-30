@@ -1,6 +1,6 @@
 /* Bizeny Akiko Chat Widget */
 (function() {
-  var API = 'https://corp.bon-soleil.com/bizeny/api/chat';
+  var API = 'https://chatbot.bon-soleil.com/api/bizeny/chat';
   var BASE = window.__CHAT_BASE || '';
   var LANG = window.__CHAT_LANG || 'ja';
   var messages = [];
@@ -126,9 +126,25 @@
     });
   }
 
+  function formatText(text) {
+    // [text](url) → <a>
+    text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+    // 裸のURL → <a>
+    text = text.replace(/(^|[\s])((https?:\/\/[^\s<]+))/g, '$1<a href="$2" target="_blank">$2</a>');
+    // **bold**
+    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // 改行
+    text = text.replace(/\n/g, '<br>');
+    return text;
+  }
+
   function addMsg(who, text) {
     var d = el('div', 'akiko-msg akiko-msg-' + who);
-    d.textContent = text;
+    if (who === 'akiko') {
+      d.innerHTML = formatText(text);
+    } else {
+      d.textContent = text;
+    }
     if (who === 'akiko') {
       var wrap = el('div', 'akiko-msg-akiko-wrap');
       var icon = document.createElement('img');
